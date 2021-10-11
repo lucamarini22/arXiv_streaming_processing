@@ -3,22 +3,14 @@ import feedparser
 import pickle
 
 topic = 'arXiv'
-print('1')
+
 # To consume latest messages and auto-commit offsets
 consumer = KafkaConsumer(topic,
                          group_id='my-group',
                          bootstrap_servers=['localhost:9092'])
-print('2')
-for message in consumer:
-  print('aaa')
-  print("------")
-  print(message)
-  print("------")
-  print(type(message))
-  print("_" * 40)
 
-  message_in_bytes = pickle.dumps(message)
-  print(type(message_in_bytes))
+for message in consumer:
+  #print(message.value)
 
   # message value and key are raw bytes -- decode if necessary!
   # e.g., for unicode: `message.value.decode('utf-8')`
@@ -28,7 +20,7 @@ for message in consumer:
                                         message.value))
   '''
   # parse the response using feedparser
-  feed = feedparser.parse(message_in_bytes)
+  feed = feedparser.parse(message.value)
 
   # Run through each entry, and print out information
   for entry in feed.entries:
@@ -40,3 +32,5 @@ for message in consumer:
       all_categories = [t['term'] for t in entry.tags]
       print('All Categories: %s' % (', ').join(all_categories))
       print('_' * 40)
+
+  
