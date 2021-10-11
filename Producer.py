@@ -8,13 +8,13 @@ from kafka import KafkaProducer
 base_url = 'http://export.arxiv.org/api/query?';
 
 # word to search -> put equal to 'a' to search for all papers
-# we suppose that every paper c
+# we suppose that every paper contains at least once the letter a
 keyword = 'a'
 # where to search the word
 # all -> means to search for it in the title, or in author names, 
 # or in the abstract, or comments, ecc. -> see section 5.1 of 
 #https://arxiv.org/help/api/user-manual#query_details
-prefix = 'au'
+prefix = 'all'
 
 # Search parameters
 search_query = prefix + ':' + keyword # search for the keyword in all fields
