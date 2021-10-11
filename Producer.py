@@ -40,16 +40,19 @@ while(True):
 
     # perform a GET request using the base_url and query
     response = urllib.request.urlopen(base_url+query).read()
-
     # parse the response using feedparser
     feed = feedparser.parse(response)
-
+    print(type(response))
     # Run through each entry, and print out information
     for entry in feed.entries:
         print('arxiv-id: %s' % entry.id.split('/abs/')[-1])
         print('Title:  %s' % entry.title)
         # feedparser v4.1 only grabs the first author
         print('First Author:  %s' % entry.author)
+        # Lets get all the categories
+        all_categories = [t['term'] for t in entry.tags]
+        print('All Categories: %s' % (', ').join(all_categories))
+        print('_' * 40)
     
     # Remember to play nice and sleep a bit before you call
     # the api again!
@@ -60,6 +63,6 @@ while(True):
 
 
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
-    producer.send(topic, b'some_message_bytes')
+    producer.send(topic, response) #b'some_message_bytes')
 
 
