@@ -32,7 +32,7 @@ i = 0
 
 while(True): 
 
-    print("Results %i - %i" % (i,i+results_per_iteration))
+    print("Produced papers between %i and %i" % (i,i+results_per_iteration))
     
     query = 'search_query=%s&start=%i&max_results=%i' % (search_query,
                                                          i,
@@ -40,9 +40,14 @@ while(True):
 
     # perform a GET request using the base_url and query
     response = urllib.request.urlopen(base_url+query).read()
+
+    # uncomment to check that the produced papers info correspond to the consumed ones
+    '''
     # parse the response using feedparser
     feed = feedparser.parse(response)
     print(type(response))
+    print(response)
+
     # Run through each entry, and print out information
     for entry in feed.entries:
         print('arxiv-id: %s' % entry.id.split('/abs/')[-1])
@@ -53,7 +58,7 @@ while(True):
         all_categories = [t['term'] for t in entry.tags]
         print('All Categories: %s' % (', ').join(all_categories))
         print('_' * 40)
-    
+    '''
     # Remember to play nice and sleep a bit before you call
     # the api again!
     print('Sleeping for %i seconds' % wait_time )
