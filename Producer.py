@@ -2,6 +2,8 @@ import urllib.request
 import time
 import feedparser
 
+from kafka import KafkaProducer
+
 # Base api query url
 base_url = 'http://export.arxiv.org/api/query?';
 
@@ -20,9 +22,11 @@ total_results = 20                    # want 20 total results
 results_per_iteration = 5             # 5 results at a time
 wait_time = 3                         # number of seconds to wait beetween calls
 
+# Kafka parameters
+topic = 'arXiv'
+
 print('Searching arXiv for %s' % search_query)
 
-#for i in range(start, total_results, results_per_iteration):
 i = 0
 
 while(True): 
@@ -52,4 +56,9 @@ while(True):
     time.sleep(wait_time)
 
     i += results_per_iteration
+
+
+    producer = KafkaProducer(bootstrap_servers='localhost:9092')
+    producer.send(topic, b'some_message_bytes')
+
 
