@@ -68,6 +68,6 @@ while(True):
 
 
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
-    producer.send(topic, response) #b'some_message_bytes')
+    producer.send(topic, response)
 
 
