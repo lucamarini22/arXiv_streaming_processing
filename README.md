@@ -1,4 +1,5 @@
 ### Execution
+start mongodb
 
 open a bash and start a ZooKeeper server:
 ```
@@ -18,8 +19,22 @@ python3 Producer.py
 ```
 open a fourth bash and run the consumer:
 ```
-spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 ./Consumer2.py
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./Consumer2.py
 ```
+
+### See papers infoinfo on MongoDB
+```
+mongosh
+```
+
+```
+use arXiv_db
+```
+
+```
+db.papers.find()
+```
+
 
 ### Package Requirements (Python 3.7)
 feedparser: 5.2.1
@@ -28,10 +43,12 @@ kafka-python: 2.0.2
 
 pyspark: 2.4.3
 
+pymongo: 3.12.0              
+
 
 ### Platforms versions
 Spark Streaming: 2.4.3
 
 Kafka: 2.0.0
 
-
+mongod: 5.0.3
