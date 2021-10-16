@@ -6,7 +6,7 @@ zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
 ```
 open a second bash and start the Kafka server:
 ```
-zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
+kafka-server-start.sh $KAFKA_HOME/config/server.properties
 ```
 open a third bash and create topi arXiv:
 ```
