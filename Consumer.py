@@ -32,5 +32,6 @@ for message in consumer:
       all_categories = [t['term'] for t in entry.tags]
       print('All Categories: %s' % (', ').join(all_categories))
       print('_' * 40)
+  print('+' * 40)
 
   
