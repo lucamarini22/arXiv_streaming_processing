@@ -21,9 +21,17 @@ open a fourth bash and run the consumer:
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10\_2.11:2.4.3 ./Consumer2.py
 ```
 
-### Package Requirements
+### Package Requirements (Python 3.7)
 feedparser: 5.2.1
 
 kafka-python: 2.0.2
 
 pyspark: 2.4.3
+
+
+### Platforms versions
+Spark Streaming: 2.4.3
+
+Kafka: 2.0.0
+
+
