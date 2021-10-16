@@ -2,11 +2,11 @@
 
 open a bash and start a ZooKeeper server:
 ```
-zookeeper-server-start.sh $KAFKA\_HOME/config/zookeeper.properties
+zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
 ```
 open a second bash and start the Kafka server:
 ```
-zookeeper-server-start.sh $KAFKA\_HOME/config/zookeeper.properties
+zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties
 ```
 open a third bash and create topi arXiv:
 ```
@@ -18,7 +18,7 @@ python3 Producer.py
 ```
 open a fourth bash and run the consumer:
 ```
-spark-submit --packages org.apache.spark:spark-sql-kafka-0-10\_2.11:2.4.3 ./Consumer2.py
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 ./Consumer2.py
 ```
 
 ### Package Requirements (Python 3.7)
