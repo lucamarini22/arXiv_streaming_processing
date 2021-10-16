@@ -14,6 +14,13 @@ findspark.init()
 
 import json 
 
+import pymongo
+
+# Create a MongoDB database and collection
+client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+db = client["arXiv_db"]
+papers_collection = db["papers"]
+
 # Create a local StreamingContext with two working thread and batch interval of 3 second
 sc = SparkContext("local", "arXivConsumer")
 ssc = StreamingContext(sc, 3)
@@ -53,6 +60,7 @@ df_paper_info = df.withColumn("value", from_json("value", schema)) \
     .select(col('value.*')) 
     #.select(col('key'), col('topic'), col('value.*'), 
     #    col('partition'), col('offset'), col('timestamp'), col('timestampType'))
+df_paper_info = df_paper_info.withColumnRenamed('key', '_id')
 
 #df_paper_info.write.format("mongo").mode("append").option("database", 
 #    "arXiv_db").option("collection", "papers").save()
