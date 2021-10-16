@@ -2,6 +2,9 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
+from pyspark.sql.functions import from_json, col
+from pyspark.sql.types import StructType, StructField, StringType
+
 import findspark
 findspark.init() 
 
@@ -12,11 +15,9 @@ sc = SparkContext("local", "arXivConsumer")
 ssc = StreamingContext(sc, 3)
 spark = SparkSession(sc)
 
-
 topic = "arXiv"
 
-
-
+# Spark reads from Kafka 
 df = spark \
   .readStream \
   .format("kafka") \
@@ -24,36 +25,35 @@ df = spark \
   .option("subscribe", topic) \
   .load()
 
+# cast value col from binary to String
+df = df.withColumn("value", df["value"].cast("string"))
 df.printSchema()
 
-#kafkaStream = KafkaUtils.createDirectStream(ssc, ['arXiv'], kafkaParams)
+# schema of value column received from Producer
+schema = StructType(
+    [
+        StructField('key', StringType(), True),
+        StructField('title', StringType(), True),
+        StructField('first_author', StringType(), True),
+        StructField('categories', StringType(), True)
+    ]
+)
 
-#kafkaStream.print()
+# dataframe that contains papers info
+df_paper_info = df.withColumn("value", from_json("value", schema)) \
+    .select(col('key'), col('topic'), col('value.*'), 
+        col('partition'), col('offset'), col('timestamp'), col('timestampType'))
 
-#parsed = kafkaStream.map(lambda v: json.loads(v))
-
-
-#fore = parsed.foreachRDD(f) 
-'''
-val printQuery2 = d.writeStream
-                       .outputMode(org.apache.spark.sql.streaming.OutputMode.Update())
-                       .format("console")
-                       .start()
-    printQuery2.awaitTermination()
-  
-    spark.stop()
-'''
-
-ds = df \
+# write dataframe to terminal
+ds = df_paper_info \
   .writeStream \
   .format("console") \
   .start() \
   .awaitTermination()
-  
-  #.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
-  #.option("kafka.bootstrap.servers", "host1:port1,host2:port2") \
-  #.option("topic", "topic1") \
+
+
+
+
 
 spark.stop()
-#ssc.start() # Start the computation
-#ssc.awaitTermination() # Wait for the computation to terminate 
+
