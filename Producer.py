@@ -78,8 +78,8 @@ while(True):
         {
         'key': arxiv_id, 
         'title': title,
-        'first_author': first_author,
-        'categories': all_categories
+        #'first_author': first_author,
+        #'categories': all_categories
         }
     )
 
