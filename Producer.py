@@ -4,6 +4,8 @@ import feedparser
 
 from kafka import KafkaProducer
 
+import json
+
 # Base api query url
 base_url = 'http://export.arxiv.org/api/query?';
 
@@ -42,32 +44,49 @@ while(True):
     response = urllib.request.urlopen(base_url+query).read()
 
     # uncomment to check that the produced papers info correspond to the consumed ones
-    '''
+    
     # parse the response using feedparser
     feed = feedparser.parse(response)
     print(type(response))
-    print(response)
+    #print(response)
 
     # Run through each entry, and print out information
     for entry in feed.entries:
-        print('arxiv-id: %s' % entry.id.split('/abs/')[-1])
-        print('Title:  %s' % entry.title)
+        arxiv_id = entry.id.split('/abs/')[-1]
+        print('arxiv-id: %s' % arxiv_id)
+
+        title = entry.title
+        print('Title:  %s' % title)
+
         # feedparser v4.1 only grabs the first author
-        print('First Author:  %s' % entry.author)
-        # Lets get all the categories
+        first_author = entry.author
+        print('First Author:  %s' % first_author)
+        
+        # get all the categories
         all_categories = [t['term'] for t in entry.tags]
-        print('All Categories: %s' % (', ').join(all_categories))
+        all_categories = (', ').join(all_categories)
+        #print('All Categories: %s' % (', ').join(all_categories))
         print('_' * 40)
-    '''
-    # Remember to play nice and sleep a bit before you call
-    # the api again!
-    print('Sleeping for %i seconds' % wait_time )
-    time.sleep(wait_time)
 
     i += results_per_iteration
 
 
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
-    producer.send(topic, response)
+    # produce json messages
+    producer = KafkaProducer(value_serializer=lambda m: json.dumps(m).encode('ascii'))
+    producer.send(topic, 
+        {
+        'key': arxiv_id, 
+        'title': title,
+        'first_author': first_author,
+        'categories': all_categories
+        }
+    )
 
+    # Remember to play nice and sleep a bit before you call
+    # the api again!
+    # Comment these 2 lines to get more than 1 row (= results_per_iteration papers) 
+    # in a batch in the Consumer
+    print('Sleeping for %i seconds' % wait_time )
+    time.sleep(wait_time)
 
