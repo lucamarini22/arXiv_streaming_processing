@@ -52,22 +52,45 @@ while(True):
 
     # Run through each entry, and print out information
     for entry in feed.entries:
+        # print(entry)
         arxiv_id = entry.id.split('/abs/')[-1]
         print('arxiv-id: %s' % arxiv_id)
 
         title = entry.title
         print('Title:  %s' % title)
 
+        isVersionOne = entry.updated == entry.published
+        print('Is first version:  %i' % isVersionOne)
+
+        published_year, published_month, published_day = list(map(int, entry.published.split('T')[0].split('-')))
+        print('Published year, month, date:  %i %i %i' % (published_year, published_month, published_day))
+
         # feedparser v4.1 only grabs the first author
         first_author = entry.author
         print('First Author:  %s' % first_author)
         
+        try:
+            pageNum = int(entry.arxiv_comment.split('pages')[0])
+        except:
+            pageNum = -1
+        print('Number of pages:  %i' % pageNum)
+
+        # figNum = int(entry.arxiv_comment.split('pages,')[1].split('figure')[0])
+        # print('Number of pages:  %i' % pageNum)
+
         # get all the categories
         all_categories = [t['term'] for t in entry.tags]
-        all_categories = (', ').join(all_categories)
-        #print('All Categories: %s' % (', ').join(all_categories))
-        print('_' * 40)
+        # all_categories = (', ').join(all_categories)
+        print('All Categories: %s' % (', ').join(all_categories))
 
+
+        # main category best guess
+        try:
+            main_cate_guess = all_categories[0].split('.')[0]
+        except:
+            main_cate_guess = 'NOTSURE'
+        print('Main category: %s' % main_cate_guess)
+        print('_' * 40)
     i += results_per_iteration
 
 
@@ -78,8 +101,14 @@ while(True):
         {
         'key': arxiv_id, 
         'title': title,
-        #'first_author': first_author,
-        #'categories': all_categories
+        'isVersionOne': isVersionOne,
+        'published_year': published_year,
+        'published_month': published_month,
+        'published_day': published_day,
+        'first_author': first_author,
+        'page_num': pageNum,
+        'categories': all_categories,
+        'main_categories': main_cate_guess
         }
     )
 
