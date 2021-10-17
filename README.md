@@ -24,6 +24,10 @@ spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mon
 
 ### See papers info on MongoDB
 ```
+sudo systemctl start mongod
+```
+
+```
 mongosh
 ```
 
