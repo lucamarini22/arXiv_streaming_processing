@@ -5,7 +5,7 @@ import feedparser
 from kafka import KafkaProducer
 
 import json
-
+import cate_map
 # Base api query url
 base_url = 'http://export.arxiv.org/api/query?';
 
@@ -31,6 +31,8 @@ topic = 'arXiv'
 print('Searching arXiv for %s' % search_query)
 
 i = 0
+
+cate_dict = cate_map.cate_dict
 
 while(True): 
 
@@ -87,9 +89,12 @@ while(True):
         # main category best guess
         try:
             main_cate_guess = all_categories[0].split('.')[0]
+            human_readable_cate = cate_dict.get(all_categories[0])
         except:
-            main_cate_guess = 'NOTSURE'
+            main_cate_guess = "OTHERS"
+            human_readable_cate = "OTHERS"
         print('Main category: %s' % main_cate_guess)
+        print('Human readable category: %s' % human_readable_cate)
         print('_' * 40)
     i += results_per_iteration
 
@@ -118,4 +123,5 @@ while(True):
     # in a batch in the Consumer
     print('Sleeping for %i seconds' % wait_time )
     time.sleep(wait_time)
+
 
