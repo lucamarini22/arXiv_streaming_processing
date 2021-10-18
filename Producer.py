@@ -113,7 +113,8 @@ while(True):
         'first_author': first_author,
         'page_num': pageNum,
         'categories': all_categories,
-        'main_categories': main_cate_guess
+        'main_categories': main_cate_guess,
+        'human_readable_categories': human_readable_cate
         }
     )
 

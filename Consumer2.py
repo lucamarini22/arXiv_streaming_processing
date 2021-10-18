@@ -57,6 +57,7 @@ schema = StructType(
         StructField('first_author', StringType(), True),
         StructField('page_num', IntegerType(), True),
         StructField('main_categories', StringType(), True),
+        StructField('human_readable_categories', StringType(), True)
         StructField('categories', StringType(), True)
     ]
 )
