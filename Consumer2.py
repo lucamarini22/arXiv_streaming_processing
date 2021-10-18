@@ -3,7 +3,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
 from pyspark.sql.functions import from_json, col
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, BooleanType
 
 #import com.mongodb.spark._
 #import com.mongodb.spark.config._
@@ -50,7 +50,7 @@ schema = StructType(
     [
         StructField('key', StringType(), True),
         StructField('title', StringType(), True),
-        StructField('isVersionOne', IntegerType(), True),
+        StructField('isVersionOne', BooleanType(), True),
         StructField('published_year', IntegerType(), True),
         StructField('published_month', IntegerType(), True),
         StructField('published_day', IntegerType(), True),
@@ -111,4 +111,5 @@ ds = df_paper_info \
 
 
 spark.stop()
+
 
