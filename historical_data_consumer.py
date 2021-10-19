@@ -13,23 +13,23 @@ import json
 import pymongo
 
 
-def write_mongo_row(df, epoch_id):
-  mongoURL = "mongodb://127.0.0.1/arXiv_db.papers"
-  df.write.format("mongo").mode("append").option("uri",mongoURL).save()
-  pass
+
 
 # Create a MongoDB database and collection
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
-db = client["arXiv_db"]
-papers_collection = db["papers"]
+db_name = "arXiv_db"
+db = client[db_name]
+
+current_collection = "papers"
+papers_collection = db[current_collection]
 
 # Create a local StreamingContext with two working thread and batch interval of 3 second
 sc = SparkContext("local", "arXivConsumer")
 ssc = StreamingContext(sc, 3)
 spark = SparkSession(sc) \
   .builder \
-  .config("spark.mongodb.input.uri", "mongodb://127.0.0.1/arXiv_db.papers") \
-  .config("spark.mongodb.output.uri", "mongodb://127.0.0.1/arXiv_db.papers") \
+  .config("spark.mongodb.input.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
+  .config("spark.mongodb.output.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
   .getOrCreate()
 
 
@@ -70,9 +70,44 @@ df_paper_info = df.withColumn("value", from_json("value", schema)) \
     .select(col('value.*')) 
 # rename column key to _id to use it as primary key of each document in MongoDB
 df_paper_info = df_paper_info.withColumnRenamed('key', '_id')
+'''
+def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_collection):
+  mongoURL = "mongodb://127.0.0.1/{}.{}".format(db_name, collection_name)
+  df.write.format("mongo").mode("append").option("uri", mongoURL).save()
+  pass
 
+def write_mongo_row2(df, epoch_id, db_name=db_name, collection_name="prova"):
+  mongoURL = "mongodb://127.0.0.1/{}.{}".format(db_name, collection_name)
+  df.write.format("mongo").mode("append").option("uri", mongoURL).save()
+  pass
+mongoURL1 = "mongodb://127.0.0.1/{}.{}".format(db_name, "papers")
+mongoURL2 = "mongodb://127.0.0.1/{}.{}".format(db_name, "prova")
 
-query=df_paper_info.writeStream.foreachBatch(write_mongo_row).start()
+df_paper_info.writeStream.foreachBatch { (batchDF: DataFrame, batchId: Long) =>
+  batchDF.persist()
+  batchDF.write.format("mongo").mode("append").option("uri", mongoURL1).save()  #location 1
+  batchDF.write.format("mongo").mode("append").option("uri", mongoURL2).save()  #location 2
+  batchDF.unpersist()
+}
+
+query=df_paper_info \
+  .writeStream \
+  .foreachBatch(write_mongo_row) \
+  .foreachBatch(write_mongo_row2) \
+  .start()
+query.awaitTermination()
+
+#current_collection = "prova"
+'''
+
+def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_collection):
+  mongoURL = "mongodb://127.0.0.1/{}.{}".format(db_name, collection_name)
+  df.write.format("mongo").mode("append").option("uri", mongoURL).save()
+  pass
+
+query=df_paper_info \
+  .writeStream \
+  .foreachBatch(write_mongo_row).start()
 query.awaitTermination()
 
 '''
@@ -85,4 +120,5 @@ ds = df_paper_info \
 '''
 
 spark.stop()
+
 
