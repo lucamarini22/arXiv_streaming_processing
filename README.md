@@ -19,7 +19,7 @@ python3 Producer.py
 ```
 open a fourth bash and run the consumer:
 ```
-spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./Consumer2.py
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./Consumer.py
 ```
 
 ### See papers info on MongoDB
