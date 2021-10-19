@@ -3,18 +3,20 @@ from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
 from pyspark.sql.functions import from_json, col
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, BooleanType
-
-#import com.mongodb.spark._
-#import com.mongodb.spark.config._
-
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, BooleanType, ArrayType
 
 import findspark
 findspark.init() 
 
-import json 
+import json
 
 import pymongo
+
+
+def write_mongo_row(df, epoch_id):
+  mongoURL = "mongodb://127.0.0.1/arXiv_db.papers"
+  df.write.format("mongo").mode("append").option("uri",mongoURL).save()
+  pass
 
 # Create a MongoDB database and collection
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
@@ -56,61 +58,31 @@ schema = StructType(
         StructField('published_day', IntegerType(), True),
         StructField('first_author', StringType(), True),
         StructField('page_num', IntegerType(), True),
-        StructField('main_categories', StringType(), True),
-        StructField('human_readable_categories', StringType(), True)
-        StructField('categories', StringType(), True)
+        StructField('main_category', StringType(), True),
+        StructField('categories', ArrayType(StringType()), True),
+        StructField('human_readable_main_category', StringType(), True),
+        StructField('human_readable_categories', ArrayType(StringType()), True)
     ]
 )
 
 # dataframe that contains papers info
 df_paper_info = df.withColumn("value", from_json("value", schema)) \
     .select(col('value.*')) 
-    #.select(col('key'), col('topic'), col('value.*'), 
-    #    col('partition'), col('offset'), col('timestamp'), col('timestampType'))
+# rename column key to _id to use it as primary key of each document in MongoDB
 df_paper_info = df_paper_info.withColumnRenamed('key', '_id')
 
-#df_paper_info.write.format("mongo").mode("append").option("database", 
-#    "arXiv_db").option("collection", "papers").save()
-'''
-data.write.format("com.mongodb.spark.sql.DefaultSource").mode("append") \
-  .option("spark.mongodb.input.uri",
-    "mongodb://127.0.0.1/arXiv_db.papers?authSource=admin") \
-  .save()
-'''
-#MongoSpark.save(df_paper_info.write.option("collection", "arXiv_db").mode("append"))
-
-'''
-df_paper_info \
-  .writeStream \
-  .format("com.mongodb.spark.sql.DefaultSource") \
-  .outputMode("append") \
-  .option("database", "arXiv_db") \
-  .option("collection", "papers") \
-  .start() \
-  .awaitTermination()
-'''
-
-def write_mongo_row(df, epoch_id):
-    mongoURL = "mongodb://127.0.0.1/arXiv_db.papers"
-    df.write.format("mongo").mode("append").option("uri",mongoURL).save()
-    pass
 
 query=df_paper_info.writeStream.foreachBatch(write_mongo_row).start()
 query.awaitTermination()
 
-# write dataframe to terminal
+'''
+# write dataframe to terminal to debug
 ds = df_paper_info \
   .writeStream \
   .format("console") \
   .start() \
   .awaitTermination()
-
-#df_paper_info.write.format("mongo").mode("append").save()
-
-
-
-
+'''
 
 spark.stop()
-
 

@@ -85,16 +85,26 @@ while(True):
         # all_categories = (', ').join(all_categories)
         print('All Categories: %s' % (', ').join(all_categories))
 
-
+        
         # main category best guess
         try:
             main_cate_guess = all_categories[0].split('.')[0]
-            human_readable_cate = cate_dict.get(all_categories[0])
+            if cate_dict.get(main_cate_guess) is not None:
+                human_readable_main_cate_guess = cate_dict.get(main_cate_guess)
+
+            human_readable_cate = []
+            for idx, cat in enumerate(all_categories):
+                # exclude categories that starts with a digit
+                if not cat[0].isdigit():
+                    if cate_dict.get(all_categories[idx]) is not None:
+                        human_readable_cate.append(cate_dict.get(all_categories[idx]))
+            
+
         except:
-            main_cate_guess = "OTHERS"
-            human_readable_cate = "OTHERS"
+            main_cate_guess = "Other"
+            human_readable_cate = "Other"
         print('Main category: %s' % main_cate_guess)
-        print('Human readable category: %s' % human_readable_cate)
+        print('Human readable subcategories: %s' % human_readable_cate)
         print('_' * 40)
     i += results_per_iteration
 
@@ -113,8 +123,9 @@ while(True):
         'first_author': first_author,
         'page_num': pageNum,
         'categories': all_categories,
-        'main_categories': main_cate_guess,
-        'human_readable_categories': human_readable_cate
+        'main_category': main_cate_guess,
+        'human_readable_categories': human_readable_cate,
+        'human_readable_main_category': human_readable_main_cate_guess
         }
     )
 
@@ -124,5 +135,4 @@ while(True):
     # in a batch in the Consumer
     print('Sleeping for %i seconds' % wait_time )
     time.sleep(wait_time)
-
 
