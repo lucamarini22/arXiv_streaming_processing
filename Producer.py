@@ -18,11 +18,15 @@ keyword = 'a'
 #https://arxiv.org/help/api/user-manual#query_details
 prefix = 'all'
 
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
+# produce json messages
+producer = KafkaProducer(value_serializer=lambda m: json.dumps(m).encode('ascii'))
+
 # Search parameters
 search_query = prefix + ':' + keyword # search for the keyword in all fields
 start = 0                             # start at the first result
-total_results = 20                    # want 20 total results
-results_per_iteration = 5             # 5 results at a time
+total_results = 2000                    # want 20 total results
+results_per_iteration = 200             # 5 results at a time
 wait_time = 3                         # number of seconds to wait beetween calls
 
 # Kafka parameters
@@ -106,28 +110,29 @@ while(True):
         print('Main category: %s' % main_cate_guess)
         print('Human readable subcategories: %s' % human_readable_cate)
         print('_' * 40)
+
+        producer.send(topic, 
+            {
+            'key': arxiv_id, 
+            'title': title,
+            'isVersionOne': isVersionOne,
+            'published_year': published_year,
+            'published_month': published_month,
+            'published_day': published_day,
+            'first_author': first_author,
+            'page_num': pageNum,
+            'categories': all_categories,
+            'main_category': main_cate_guess,
+            'human_readable_categories': human_readable_cate,
+            'human_readable_main_category': human_readable_main_cate_guess
+            }
+        )
+
     i += results_per_iteration
 
 
-    producer = KafkaProducer(bootstrap_servers='localhost:9092')
-    # produce json messages
-    producer = KafkaProducer(value_serializer=lambda m: json.dumps(m).encode('ascii'))
-    producer.send(topic, 
-        {
-        'key': arxiv_id, 
-        'title': title,
-        'isVersionOne': isVersionOne,
-        'published_year': published_year,
-        'published_month': published_month,
-        'published_day': published_day,
-        'first_author': first_author,
-        'page_num': pageNum,
-        'categories': all_categories,
-        'main_category': main_cate_guess,
-        'human_readable_categories': human_readable_cate,
-        'human_readable_main_category': human_readable_main_cate_guess
-        }
-    )
+    
+    
 
     # Remember to play nice and sleep a bit before you call
     # the api again!
@@ -135,4 +140,5 @@ while(True):
     # in a batch in the Consumer
     print('Sleeping for %i seconds' % wait_time )
     time.sleep(wait_time)
+
 
