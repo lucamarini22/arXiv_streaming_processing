@@ -15,11 +15,11 @@ kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --par
 ```
 run the Producer:
 ```
-python3 Producer.py
+python3 historical_producer.py
 ```
 open a fourth bash and run the consumer:
 ```
-spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./Consumer.py
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./historical_consumer.py
 ```
 
 ### See papers info on MongoDB
