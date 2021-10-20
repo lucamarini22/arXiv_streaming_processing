@@ -25,8 +25,8 @@ producer = KafkaProducer(value_serializer=lambda m: json.dumps(m).encode('ascii'
 # Search parameters
 search_query = prefix + ':' + keyword # search for the keyword in all fields
 start = 0                             # start at the first result
-total_results = 2000                    # want 20 total results
-results_per_iteration = 200             # 5 results at a time
+total_results = 2000                    # total results per cycle
+results_per_iteration = 200             # results at a time
 wait_time = 3                         # number of seconds to wait beetween calls
 
 # Kafka parameters
