@@ -9,10 +9,16 @@ open a second bash and start the Kafka server:
 ```
 kafka-server-start.sh $KAFKA_HOME/config/server.properties
 ```
-open a third bash and create topi arXiv:
+open a third bash and create topic arXiv:
 ```
 kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic arXiv
 ```
+
+create topic real\_time\_arXiv:
+```
+kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic real_time_arXiv
+```
+
 run the Producer:
 ```
 python3 historical_producer.py

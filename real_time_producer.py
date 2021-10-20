@@ -30,7 +30,7 @@ results_per_iteration = 2             # results at a time
 wait_time = 3                         # number of seconds to wait beetween calls
 
 # Kafka parameters
-topic = 'arXiv'
+topic = 'real_time_arXiv'
 
 print('Searching arXiv for %s' % search_query)
 
