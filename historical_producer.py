@@ -109,6 +109,10 @@ while(True):
             human_readable_cate = "Other"
         print('Main category: %s' % main_cate_guess)
         print('Human readable subcategories: %s' % human_readable_cate)
+        
+        abstract = entry.summary
+        #print(abstract)
+        
         print('_' * 40)
 
         producer.send(topic, 
@@ -124,7 +128,8 @@ while(True):
             'categories': all_categories,
             'main_category': main_cate_guess,
             'human_readable_categories': human_readable_cate,
-            'human_readable_main_category': human_readable_main_cate_guess
+            'human_readable_main_category': human_readable_main_cate_guess,
+            'abstract': abstract
             }
         )
 
