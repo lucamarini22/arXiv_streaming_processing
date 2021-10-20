@@ -16,22 +16,23 @@ import pymongo
 
 
 # Create a MongoDB database and collection
-client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
+#client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
 db_name = "arXiv_db"
-db = client[db_name]
+#db = client[db_name]
 
 current_collection = "papers"
-papers_collection = db[current_collection]
+#papers_collection = db[current_collection]
 
 # Create a local StreamingContext with two working thread and batch interval of 3 second
 sc = SparkContext("local", "arXivConsumer")
-ssc = StreamingContext(sc, 3)
+#ssc = StreamingContext(sc, 3)
 spark = SparkSession(sc) \
   .builder \
-  .config("spark.mongodb.input.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
-  .config("spark.mongodb.output.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
   .getOrCreate()
-
+  #.config("spark.mongodb.input.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
+  #.config("spark.mongodb.output.uri", "mongodb://127.0.0.1/{}.{}".format(db_name, current_collection)) \
+  
+spark.sparkContext.setLogLevel('WARN')
 
 topic = "arXiv"
 
@@ -117,8 +118,8 @@ ds = df_paper_info \
   .format("console") \
   .start() \
   .awaitTermination()
+#  .trigger(processingTime='2 seconds') \
 '''
-
 spark.stop()
 
 
