@@ -27,7 +27,7 @@ search_query = prefix + ':' + keyword + "&sortBy=lastUpdatedDate&sortOrder=desce
 start = 0                             # start at the first result
 total_results = 2000                    # total results per cycle
 results_per_iteration = 2             # results at a time
-wait_time = 3                         # number of seconds to wait beetween calls
+wait_time = 20                         # number of seconds to wait beetween calls
 
 # Kafka parameters
 topic = 'real_time_arXiv'

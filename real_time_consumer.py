@@ -3,6 +3,7 @@ from pyspark.streaming import StreamingContext
 from pyspark.sql.session import SparkSession
 
 from pyspark.sql.functions import from_json, col
+from pyspark.sql import functions as func
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, BooleanType, ArrayType
 
 import findspark
@@ -86,14 +87,29 @@ query=df_paper_info \
 query.awaitTermination()
 '''
 
+df_num_papers_cat = df_paper_info.groupby(df_paper_info.main_category).count()
+
+#val d = inputDataset.groupBy("realkey").agg(mean("realvalue"))
+
+df_avg_pages_cat = df_paper_info \
+  .filter(df_paper_info.page_num > 0) \
+  .groupBy(df_paper_info.main_category) \
+  .agg(func.mean('page_num'))
+
+# need to write this, but I get an error
+final_df = df_num_papers_cat.join(df_avg_pages_cat, 
+  df_num_papers_cat.main_category == df_avg_pages_cat.main_category, 'inner')
+
 # write dataframe to terminal to debug
-ds = df_paper_info \
+ds = df_avg_pages_cat \
   .writeStream \
+  .outputMode("complete") \
   .format("console") \
   .start() \
   .awaitTermination()
 
 #.outputMode("complete") \
 spark.stop()
+
 
 
