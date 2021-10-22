@@ -1,6 +1,0 @@
-,window,main_category,avg(page_num)
-0,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 30), end=datetime.datetime(2021, 10, 22, 23, 34, 40))",hep-ph,5.0
-1,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 30), end=datetime.datetime(2021, 10, 22, 23, 34, 40))",quant-ph,11.0
-2,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 30), end=datetime.datetime(2021, 10, 22, 23, 34, 40))",math,23.75
-3,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 30), end=datetime.datetime(2021, 10, 22, 23, 34, 40))",cond-mat,5.0
-4,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 30), end=datetime.datetime(2021, 10, 22, 23, 34, 40))",cs,16.0

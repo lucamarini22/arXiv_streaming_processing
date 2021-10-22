@@ -1,5 +1,0 @@
-,window,main_category,count
-0,"Row(start=datetime.datetime(2021, 10, 22, 23, 35), end=datetime.datetime(2021, 10, 22, 23, 35, 10))",eess,1
-1,"Row(start=datetime.datetime(2021, 10, 22, 23, 35), end=datetime.datetime(2021, 10, 22, 23, 35, 10))",physics,1
-2,"Row(start=datetime.datetime(2021, 10, 22, 23, 35), end=datetime.datetime(2021, 10, 22, 23, 35, 10))",math,2
-3,"Row(start=datetime.datetime(2021, 10, 22, 23, 35), end=datetime.datetime(2021, 10, 22, 23, 35, 10))",cs,4

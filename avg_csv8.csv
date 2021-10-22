@@ -1,8 +1,0 @@
-,window,main_category,avg(page_num)
-0,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 30), end=datetime.datetime(2021, 10, 22, 23, 35, 40))",math,34.0
-1,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 30), end=datetime.datetime(2021, 10, 22, 23, 35, 40))",astro-ph,9.0
-2,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 30), end=datetime.datetime(2021, 10, 22, 23, 35, 40))",math-ph,21.0
-3,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 30), end=datetime.datetime(2021, 10, 22, 23, 35, 40))",cs,54.0
-4,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 30), end=datetime.datetime(2021, 10, 22, 23, 35, 40))",cond-mat,5.0
-5,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 20), end=datetime.datetime(2021, 10, 22, 23, 35, 30))",quant-ph,7.0
-6,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 20), end=datetime.datetime(2021, 10, 22, 23, 35, 30))",hep-ph,6.0
