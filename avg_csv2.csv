@@ -1,0 +1,4 @@
+,window,main_category,avg(page_num)
+0,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 20), end=datetime.datetime(2021, 10, 22, 23, 34, 30))",cond-mat,8.0
+1,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 20), end=datetime.datetime(2021, 10, 22, 23, 34, 30))",hep-th,25.0
+2,"Row(start=datetime.datetime(2021, 10, 22, 23, 34, 20), end=datetime.datetime(2021, 10, 22, 23, 34, 30))",math,21.0

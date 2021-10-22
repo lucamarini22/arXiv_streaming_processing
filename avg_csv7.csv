@@ -1,0 +1,4 @@
+,window,main_category,avg(page_num)
+0,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 10), end=datetime.datetime(2021, 10, 22, 23, 35, 20))",gr-qc,19.0
+1,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 10), end=datetime.datetime(2021, 10, 22, 23, 35, 20))",astro-ph,24.0
+2,"Row(start=datetime.datetime(2021, 10, 22, 23, 35, 10), end=datetime.datetime(2021, 10, 22, 23, 35, 20))",math,37.0
