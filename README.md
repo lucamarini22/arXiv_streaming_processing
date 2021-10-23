@@ -55,7 +55,6 @@ pyspark: 2.4.3
 
 pymongo: 3.12.0              
 
-nltk: 3.6.5
 
 ### Platforms versions
 Spark Streaming: 2.4.3

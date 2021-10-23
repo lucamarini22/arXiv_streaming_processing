@@ -63,7 +63,8 @@ schema = StructType(
         StructField('categories', ArrayType(StringType()), True),
         StructField('human_readable_main_category', StringType(), True),
         StructField('human_readable_categories', ArrayType(StringType()), True),
-        StructField('abstract', StringType(), True)
+        StructField('abstract', StringType(), True),
+        StructField('keywords', ArrayType(StringType()), True)
     ]
 )
 
