@@ -8,7 +8,6 @@ nltk_words = list(stopwords.words('english'))
 from extract_info_common import extract_func
 
 import json
-import cate_map
 # Base api query url
 base_url = 'http://export.arxiv.org/api/query?';
 
@@ -38,8 +37,6 @@ topic = 'real_time_arXiv'
 print('Searching arXiv for %s' % search_query)
 
 i = 0
-
-cate_dict = cate_map.cate_dict
 
 while(True): 
 

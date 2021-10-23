@@ -7,7 +7,6 @@ from nltk.corpus import stopwords
 nltk_words = list(stopwords.words('english'))
 
 import json
-import cate_map
 
 from extract_info_common import extract_func
 
@@ -41,8 +40,6 @@ print('Searching arXiv for %s' % search_query)
 
 i = 0
 
-cate_dict = cate_map.cate_dict
-
 while(True): 
 
     print("Produced papers between %i and %i" % (i,i+results_per_iteration))
@@ -63,6 +60,7 @@ while(True):
 
     # Run through each entry, and print out information
     for entry in feed.entries:
+        print(entry.title)
         extract_func(producer, topic, entry, nltk_words)
 
     i += results_per_iteration
