@@ -64,12 +64,6 @@ df_paper_info = df.withColumn("value", from_json("value", schema)) \
     .select(col('value.*'))
 # rename column key to _id to use it as primary key of each document in MongoDB
 df_paper_info = df_paper_info.withColumnRenamed('key', '_id')
-ds = df_paper_info \
-  .writeStream \
-  .format("console") \
-  .start() \
-  .awaitTermination()
-
 
 def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_collection):
   mongoURL = "mongodb://127.0.0.1/{}.{}".format(db_name, collection_name)
