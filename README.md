@@ -1,5 +1,4 @@
 ### Execution
-start mongodb
 
 open a bash and start a ZooKeeper server:
 ```
@@ -19,31 +18,35 @@ create topic real\_time\_arXiv:
 kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic real_time_arXiv
 ```
 
-run the Producer:
+run the historical producer:
 ```
 python3 historical_producer.py
 ```
-open a fourth bash and run the consumer:
+open a fourth bash and run the historical consumer:
 ```
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./historical_consumer.py
 ```
 
-### See papers info on MongoDB
+open a fifth bash and run the real-time producer:
 ```
-sudo systemctl start mongod
+python3 real_time_producer.py
+```
+open a sixth bash and run the real-time consumer:
+```
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./real_time_consumer.py
+```
+
+### See historical and real-time papers' info on MongoDB Charts
+```
+cd mongodb-charts
 ```
 
 ```
-mongosh
+sudo docker-compose up -d
 ```
 
-```
-use arXiv_db
-```
+go to http://localhost:8080 and login with the credentials (email, password) that are present in docker-compose.yaml
 
-```
-db.papers.find()
-```
 
 
 ### Package Requirements (Python 3.7)
