@@ -13,3 +13,6 @@
 ![](https://github.com/lucamarini22/arXiv_streaming_processing/blob/main/visualization_examples/img/v6.png?raw=true)
 
 ![](https://github.com/lucamarini22/arXiv_streaming_processing/blob/main/visualization_examples/img/v7.png?raw=true)
+
+![](https://github.com/lucamarini22/arXiv_streaming_processing/blob/main/visualization_examples/img/v8.png?raw=true)
+
