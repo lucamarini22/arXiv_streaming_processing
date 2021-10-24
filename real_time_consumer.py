@@ -71,7 +71,7 @@ uuidUdf= func.udf(lambda : str(uuid.uuid4()),StringType())
 df_num_papers_cat = df_paper_info \
   .withColumn('time', func.current_timestamp()) \
   .withWatermark("time", "5 seconds") \
-  .groupby(func.window("time", "10 seconds"), col("main_category")) \
+  .groupby(func.window("time", "10 seconds"), col("human_readable_main_category")) \
   .count()
 
 df_num_papers_cat.printSchema()
@@ -81,7 +81,7 @@ df_avg_pages_cat = df_paper_info \
   .withColumn('time', func.current_timestamp()) \
   .withWatermark("time", "15 seconds") \
   .filter(col("page_num") > 0) \
-  .groupBy(func.window("time", "10 seconds"), col("main_category")) \
+  .groupBy(func.window("time", "10 seconds"), col("human_readable_main_category")) \
   .agg(func.mean(col('page_num'))).alias("time")
 
 
@@ -114,8 +114,8 @@ def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_colle
   #df.write.format("console").mode("append").save()
   
 
-#dss = df_num_papers_cat \
-#  .writeStream.foreachBatch(foreach_batch_cnt).start()
+dss = df_num_papers_cat \
+  .writeStream.foreachBatch(foreach_batch_cnt).start()
 
 dss = df_num_papers_cat \
   .writeStream.foreachBatch(write_mongo_row).start().awaitTermination()
