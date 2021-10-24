@@ -7,26 +7,26 @@ def extract_func(producer, topic, entry, nltk_words):
 
 
     arxiv_id = entry.id.split('/abs/')[-1]
-    #print('arxiv-id: %s' % arxiv_id)
+    print('arxiv-id: %s' % arxiv_id)
 
     title = entry.title
-    #print('Title:  %s' % title)
+    print('Title:  %s' % title)
 
     isVersionOne = entry.updated == entry.published
-    #print('Is first version:  %i' % isVersionOne)
+    print('Is first version:  %i' % isVersionOne)
 
     published_year, published_month, published_day = list(map(int, entry.published.split('T')[0].split('-')))
-    #print('Published year, month, date:  %i %i %i' % (published_year, published_month, published_day))
+    print('Published year, month, date:  %i %i %i' % (published_year, published_month, published_day))
 
     # feedparser v4.1 only grabs the first author
     first_author = entry.author
-    #print('First Author:  %s' % first_author)
+    print('First Author:  %s' % first_author)
     
     try:
         pageNum = int(entry.arxiv_comment.split('pages')[0])
     except:
         pageNum = -1
-    #print('Number of pages:  %i' % pageNum)
+    print('Number of pages:  %i' % pageNum)
 
     # figNum = int(entry.arxiv_comment.split('pages,')[1].split('figure')[0])
     # print('Number of pages:  %i' % pageNum)
@@ -34,7 +34,7 @@ def extract_func(producer, topic, entry, nltk_words):
     # get all the categories
     all_categories = [t['term'] for t in entry.tags]
     # all_categories = (', ').join(all_categories)
-    #print('All Categories: %s' % (', ').join(all_categories))
+    print('All Categories: %s' % (', ').join(all_categories))
 
     
     # main category best guess
@@ -55,16 +55,16 @@ def extract_func(producer, topic, entry, nltk_words):
         
     except:
         pass
-    #print('Main category: %s' % main_cate_guess)
-    #print('Human readable subcategories: %s' % human_readable_cate)
+    print('Main category: %s' % main_cate_guess)
+    print('Human readable subcategories: %s' % human_readable_cate)
     
     abstract = entry.summary
-    #print(abstract)
+    print(abstract)
 
     common = set(title.split()) & set(abstract.split())
     filtered_common = [word for word in common if word not in nltk_words]
 
-    #print(filtered_common)
+    print(filtered_common)
     
     #print('_' * 40)
     
