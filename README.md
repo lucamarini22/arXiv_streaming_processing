@@ -1,3 +1,6 @@
+# arXiv Streaming Processing
+see some visualization results [here](https://github.com/lucamarini22/arXiv_streaming_processing/blob/main/visualization_examples/README.md)
+
 ### Execution
 
 open a bash and start a ZooKeeper server:
