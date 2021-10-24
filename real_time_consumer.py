@@ -114,16 +114,16 @@ def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_colle
   #df.write.format("console").mode("append").save()
   
 
-dss = df_num_papers_cat \
-  .writeStream.foreachBatch(foreach_batch_cnt).start()
+#dss = df_num_papers_cat \
+#  .writeStream.foreachBatch(foreach_batch_cnt).start()
 
 dss = df_num_papers_cat \
   .writeStream.foreachBatch(write_mongo_row).start().awaitTermination()
 
-'''
+
 dss2 = df_avg_pages_cat \
-  .writeStream.foreachBatch(foreach_batch_avg).start().awaitTermination()
-'''
+  .writeStream.foreachBatch(write_mongo_row).start().awaitTermination()
+
 spark.stop()
 
 
