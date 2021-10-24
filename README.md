@@ -36,7 +36,10 @@ open a sixth bash and run the real-time consumer:
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3,org.mongodb.spark:mongo-spark-connector_2.11:2.4.3 ./real_time_consumer.py
 ```
 
-### See historical and real-time papers' info on MongoDB Charts
+### Visualize historical and real-time papers' info
+Install and run MongoDB Charts:
+
+
 ```
 cd mongodb-charts
 ```
