@@ -89,7 +89,7 @@ df_avg_pages_cat = df_paper_info \
 
 global_cnt_cnt = 0
 global_avg_cnt = 0
-
+'''
 def foreach_batch_cnt(df, epoch_id):
     global global_cnt_cnt
     df.persist()
@@ -107,7 +107,7 @@ def foreach_batch_avg(df, epoch_id):
         global_avg_cnt += 1
         pdf.to_csv('avg_csv' + str(global_avg_cnt) + '.csv')
     df.unpersist()
-
+'''
 def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_collection):
   mongoURL = "mongodb://127.0.0.1/{}.{}".format(db_name, collection_name)
   df.write.format("mongo").mode("append").option("uri", mongoURL).save()
@@ -118,7 +118,7 @@ def write_mongo_row(df, epoch_id, db_name=db_name, collection_name=current_colle
 #  .writeStream.foreachBatch(foreach_batch_cnt).start()
 
 dss = df_num_papers_cat \
-  .writeStream.foreachBatch(write_mongo_row).start().awaitTermination()
+  .writeStream.foreachBatch(write_mongo_row).start()
 
 
 dss2 = df_avg_pages_cat \
